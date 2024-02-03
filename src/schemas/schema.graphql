@@ -1,0 +1,59 @@
+"""
+assets
+"""
+enum MediaType {
+  IMAGE
+  VIDEO
+  AUDIO
+  DOCUMENT
+}
+
+type Metadata {
+    key: String!
+    value: String!
+}
+
+type Asset {
+  id: ID!
+  url: String!
+  type: MediaType!
+  metadata: [Metadata]
+  filename: String!
+  size: Int
+  createdAt: String
+  modifiedAt: String
+  tags: [String]
+}
+
+
+"""
+Album
+"""
+type Album {
+  id: ID!
+  title: String!
+  description: String
+  assets: [Asset]
+  tags: [String]
+  createdAt: String
+  modifiedAt: String
+  modifiedBy: String
+}
+
+type Query {
+  albums: [Album]
+  album(id: ID!): Album
+  assets: [Asset]
+  asset(id: ID!): Asset
+}
+
+
+type Mutation {
+  addAlbum(title: String!, description: String, assets: [ID]): Album
+  updateAlbum(id: ID!, title: String, description: String, assets: [ID]): Album
+  deleteAlbum(id: ID!): Boolean
+
+  addAsset(url: String!, type: MediaType!, metadata: ID): Asset
+  updateAsset(id: ID!, url: String, type: MediaType, metadata: ID): Asset
+  deleteAsset(id: ID!): Boolean
+}

@@ -1,0 +1,7 @@
+overwrite: true
+schema: "src/schemas/schema.graphql"  # This should point to the preprocessed combined schema file
+generates:
+  src/generated/graphql.ts:
+    plugins:
+      - "typescript"
+      - "typescript-resolvers"
