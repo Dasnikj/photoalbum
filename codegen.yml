@@ -1,7 +1,14 @@
 overwrite: true
-schema: "src/schemas/schema.graphql"  # This should point to the preprocessed combined schema file
+schema: "./src/modules/**/schema.graphql"
 generates:
-  src/generated/graphql.ts:
+  './server/src/modules/':
+    preset: "graphql-modules"
+    presetConfig:
+      baseTypesPath: "../generated-types/graphql.ts"
+      filename: "generated-types/module-types.ts"
     plugins:
+      - add:
+          content: '/* eslint-disable */'
       - "typescript"
+      - "typescript-operations"
       - "typescript-resolvers"

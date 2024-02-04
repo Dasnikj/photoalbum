@@ -2,33 +2,37 @@
 
 ```md
 photoalbum-project/
-│
 ├── src/
-│   ├── models/
-│   │   ├── Album.ts       # Mongoose model for Album
-│   │   ├── Asset.ts       # Mongoose model for Asset
-│   │   └── Metadata.ts    # Mongoose model for Metadata
-│   │
-│   ├── resolvers/
-│   │   ├── albumResolvers.ts  # Resolvers specific to Album
-│   │   ├── assetResolvers.ts  # Resolvers specific to Asset
-│   │   └── index.ts           # Combining all resolvers
-│   │
-│   ├── schemas/
-│   │   └── schema.graphql     # GraphQL schema definitions
-│   │
+│   ├── modules/
+│   │   ├── album/
+│   │   │   ├── models/
+│   │   │   │   └── Album.ts          # Mongoose model for Album
+│   │   │   ├── schema.graphql        # GraphQL schema definitions for Album
+│   │   │   ├── resolvers.ts          # Resolvers specific to Album
+│   │   │   └── index.ts              # Exports Album module's typeDefs and resolvers
+│   │   │
+│   │   ├── asset/
+│   │   │   ├── models/
+│   │   │   │   ├── Asset.ts          # Mongoose model for Asset
+│   │   │   │   └── Metadata.ts       # Mongoose model for Metadata
+│   │   │   ├── schema.graphql        # GraphQL schema definitions for Asset
+│   │   │   ├── resolvers.ts          # Resolvers specific to Asset
+│   │   │   └── index.ts              # Exports Asset module's typeDefs and resolvers
+│   │   │
+│   │   ├── [OtherModules]/           # Future modules follow the same structure
+│   │   │   └── ...
 │   │
 │   ├── utils/
-│   │   └── db.ts              # Utility for MongoDB connection
+│   │   └── db.ts                     # Utility for MongoDB connection
 │   │
-│   └── index.ts               # Main entry point for the Apollo Server
+│   └── index.ts                      # Main entry point for the Apollo Server
 │
-├── node_modules/              # Project dependencies
+├── node_modules/                     # Project dependencies
 │
-├── .env                       # Environment variables
-├── .gitignore                 # Specifies intentionally untracked files to ignore
-├── package.json               # Project metadata and dependencies
-├── tsconfig.json              # TypeScript configuration
-└── README.md                  # Project documentation
+├── .env                              # Environment variables
+├── .gitignore                        # Specifies intentionally untracked files to ignore
+├── package.json                      # Project metadata and dependencies
+├── tsconfig.json                     # TypeScript configuration
+└── README.md                         # Project documentation
 
 ```
