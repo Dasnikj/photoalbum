@@ -9,15 +9,15 @@ enum MediaType {
 }
 
 type Metadata {
-    key: String!
-    value: String!
+  key: String!
+  value: String!
 }
 
 type Asset {
   id: ID!
   url: String!
   type: MediaType!
-  metadata: [Metadata]
+  metadata: [Metadata] # List of Metadata items
   filename: String!
   size: Int
   createdAt: String
@@ -25,6 +25,28 @@ type Asset {
   tags: [String]
 }
 
+input MetadataInput {
+  key: String!
+  value: String!
+}
+
+input AssetInput {
+  url: String!
+  type: MediaType!
+  metadata: [MetadataInput] # Adjusted to accept a list of MetadataInput items
+  filename: String!
+  size: Int
+  tags: [String]
+}
+
+input AssetUpdateInput {
+  url: String
+  type: MediaType
+  metadata: [MetadataInput] # Adjusted for updates
+  filename: String
+  size: Int
+  tags: [String]
+}
 
 """
 Album
@@ -33,12 +55,28 @@ type Album {
   id: ID!
   title: String!
   description: String
-  assets: [Asset]
+  assets: [Asset] # Assuming 'Asset' type is defined elsewhere in your schema
   tags: [String]
   createdAt: String
   modifiedAt: String
   modifiedBy: String
 }
+
+input AlbumInput {
+  title: String!
+  description: String
+  assets: [ID] # References to existing Asset IDs
+  tags: [String]
+}
+
+input AlbumUpdateInput {
+  title: String
+  description: String
+  assets: [ID] # References for updating existing Asset associations
+  tags: [String]
+}
+
+
 
 type Query {
   albums: [Album]
@@ -49,11 +87,11 @@ type Query {
 
 
 type Mutation {
-  addAlbum(title: String!, description: String, assets: [ID]): Album
-  updateAlbum(id: ID!, title: String, description: String, assets: [ID]): Album
+  addAlbum(input: AlbumInput): Album
+  updateAlbum(id: ID!, input: AlbumUpdateInput): Album
   deleteAlbum(id: ID!): Boolean
 
-  addAsset(url: String!, type: MediaType!, metadata: ID): Asset
-  updateAsset(id: ID!, url: String, type: MediaType, metadata: ID): Asset
+  addAsset(input: AssetInput): Asset
+  updateAsset(id: ID!, input: AssetUpdateInput): Asset
   deleteAsset(id: ID!): Boolean
 }

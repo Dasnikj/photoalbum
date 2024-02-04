@@ -29,6 +29,20 @@ export type Album = {
   title: Scalars['String']['output'];
 };
 
+export type AlbumInput = {
+  assets?: InputMaybe<Array<InputMaybe<Scalars['ID']['input']>>>;
+  description?: InputMaybe<Scalars['String']['input']>;
+  tags?: InputMaybe<Array<InputMaybe<Scalars['String']['input']>>>;
+  title: Scalars['String']['input'];
+};
+
+export type AlbumUpdateInput = {
+  assets?: InputMaybe<Array<InputMaybe<Scalars['ID']['input']>>>;
+  description?: InputMaybe<Scalars['String']['input']>;
+  tags?: InputMaybe<Array<InputMaybe<Scalars['String']['input']>>>;
+  title?: InputMaybe<Scalars['String']['input']>;
+};
+
 export type Asset = {
   __typename?: 'Asset';
   createdAt?: Maybe<Scalars['String']['output']>;
@@ -40,6 +54,24 @@ export type Asset = {
   tags?: Maybe<Array<Maybe<Scalars['String']['output']>>>;
   type: MediaType;
   url: Scalars['String']['output'];
+};
+
+export type AssetInput = {
+  filename: Scalars['String']['input'];
+  metadata?: InputMaybe<Array<InputMaybe<MetadataInput>>>;
+  size?: InputMaybe<Scalars['Int']['input']>;
+  tags?: InputMaybe<Array<InputMaybe<Scalars['String']['input']>>>;
+  type: MediaType;
+  url: Scalars['String']['input'];
+};
+
+export type AssetUpdateInput = {
+  filename?: InputMaybe<Scalars['String']['input']>;
+  metadata?: InputMaybe<Array<InputMaybe<MetadataInput>>>;
+  size?: InputMaybe<Scalars['Int']['input']>;
+  tags?: InputMaybe<Array<InputMaybe<Scalars['String']['input']>>>;
+  type?: InputMaybe<MediaType>;
+  url?: InputMaybe<Scalars['String']['input']>;
 };
 
 /** assets */
@@ -56,6 +88,11 @@ export type Metadata = {
   value: Scalars['String']['output'];
 };
 
+export type MetadataInput = {
+  key: Scalars['String']['input'];
+  value: Scalars['String']['input'];
+};
+
 export type Mutation = {
   __typename?: 'Mutation';
   addAlbum?: Maybe<Album>;
@@ -68,16 +105,12 @@ export type Mutation = {
 
 
 export type MutationAddAlbumArgs = {
-  assets?: InputMaybe<Array<InputMaybe<Scalars['ID']['input']>>>;
-  description?: InputMaybe<Scalars['String']['input']>;
-  title: Scalars['String']['input'];
+  input?: InputMaybe<AlbumInput>;
 };
 
 
 export type MutationAddAssetArgs = {
-  metadata?: InputMaybe<Scalars['ID']['input']>;
-  type: MediaType;
-  url: Scalars['String']['input'];
+  input?: InputMaybe<AssetInput>;
 };
 
 
@@ -92,18 +125,14 @@ export type MutationDeleteAssetArgs = {
 
 
 export type MutationUpdateAlbumArgs = {
-  assets?: InputMaybe<Array<InputMaybe<Scalars['ID']['input']>>>;
-  description?: InputMaybe<Scalars['String']['input']>;
   id: Scalars['ID']['input'];
-  title?: InputMaybe<Scalars['String']['input']>;
+  input?: InputMaybe<AlbumUpdateInput>;
 };
 
 
 export type MutationUpdateAssetArgs = {
   id: Scalars['ID']['input'];
-  metadata?: InputMaybe<Scalars['ID']['input']>;
-  type?: InputMaybe<MediaType>;
-  url?: InputMaybe<Scalars['String']['input']>;
+  input?: InputMaybe<AssetUpdateInput>;
 };
 
 export type Query = {
@@ -196,12 +225,17 @@ export type DirectiveResolverFn<TResult = {}, TParent = {}, TContext = {}, TArgs
 /** Mapping between all available schema types and the resolvers types */
 export type ResolversTypes = {
   Album: ResolverTypeWrapper<Album>;
+  AlbumInput: AlbumInput;
+  AlbumUpdateInput: AlbumUpdateInput;
   Asset: ResolverTypeWrapper<Asset>;
+  AssetInput: AssetInput;
+  AssetUpdateInput: AssetUpdateInput;
   Boolean: ResolverTypeWrapper<Scalars['Boolean']['output']>;
   ID: ResolverTypeWrapper<Scalars['ID']['output']>;
   Int: ResolverTypeWrapper<Scalars['Int']['output']>;
   MediaType: MediaType;
   Metadata: ResolverTypeWrapper<Metadata>;
+  MetadataInput: MetadataInput;
   Mutation: ResolverTypeWrapper<{}>;
   Query: ResolverTypeWrapper<{}>;
   String: ResolverTypeWrapper<Scalars['String']['output']>;
@@ -210,11 +244,16 @@ export type ResolversTypes = {
 /** Mapping between all available schema types and the resolvers parents */
 export type ResolversParentTypes = {
   Album: Album;
+  AlbumInput: AlbumInput;
+  AlbumUpdateInput: AlbumUpdateInput;
   Asset: Asset;
+  AssetInput: AssetInput;
+  AssetUpdateInput: AssetUpdateInput;
   Boolean: Scalars['Boolean']['output'];
   ID: Scalars['ID']['output'];
   Int: Scalars['Int']['output'];
   Metadata: Metadata;
+  MetadataInput: MetadataInput;
   Mutation: {};
   Query: {};
   String: Scalars['String']['output'];
@@ -252,8 +291,8 @@ export type MetadataResolvers<ContextType = any, ParentType extends ResolversPar
 };
 
 export type MutationResolvers<ContextType = any, ParentType extends ResolversParentTypes['Mutation'] = ResolversParentTypes['Mutation']> = {
-  addAlbum?: Resolver<Maybe<ResolversTypes['Album']>, ParentType, ContextType, RequireFields<MutationAddAlbumArgs, 'title'>>;
-  addAsset?: Resolver<Maybe<ResolversTypes['Asset']>, ParentType, ContextType, RequireFields<MutationAddAssetArgs, 'type' | 'url'>>;
+  addAlbum?: Resolver<Maybe<ResolversTypes['Album']>, ParentType, ContextType, Partial<MutationAddAlbumArgs>>;
+  addAsset?: Resolver<Maybe<ResolversTypes['Asset']>, ParentType, ContextType, Partial<MutationAddAssetArgs>>;
   deleteAlbum?: Resolver<Maybe<ResolversTypes['Boolean']>, ParentType, ContextType, RequireFields<MutationDeleteAlbumArgs, 'id'>>;
   deleteAsset?: Resolver<Maybe<ResolversTypes['Boolean']>, ParentType, ContextType, RequireFields<MutationDeleteAssetArgs, 'id'>>;
   updateAlbum?: Resolver<Maybe<ResolversTypes['Album']>, ParentType, ContextType, RequireFields<MutationUpdateAlbumArgs, 'id'>>;

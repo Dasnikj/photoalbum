@@ -5,6 +5,7 @@ import { MediaType } from '../generated/graphql'; // Ensure this import if you'r
 
 export const assetResolvers: Resolvers = {
   Query: {
+    assets: async () => await Asset.find({}),
     asset: async (_, { id }) => {
       const asset = await Asset.findById(id).lean();
       if (!asset) {
@@ -18,27 +19,24 @@ export const assetResolvers: Resolvers = {
     },
   },
   Mutation: {
-    addAsset: async (_, { url, type, metadata }) => {
-      const newAsset = new Asset({ url, type, metadata });
+    addAsset: async (_, { input }) => {
+      const newAsset = new Asset(input);
       await newAsset.save();
+      if (!newAsset) {
+        throw new Error('Asset not created');
+      }
+
       return {
         ...newAsset.toObject(),
         id: newAsset._id.toString(), // Ensure 'id' matches the GraphQL schema
       };
     },
-    updateAsset: async (_, { id, url, type, metadata }) => {
-      const updatedAsset = await Asset.findByIdAndUpdate(
-        id,
-        { url, type, metadata },
-        { new: true, runValidators: true }
-      ).lean();
+    updateAsset: async (_, { id, input }) => {
+      const updatedAsset = await Asset.findByIdAndUpdate(id, {id, ...input}, { new: true }).lean();
       if (!updatedAsset) {
         throw new Error('Asset not found');
       }
-      return {
-        ...updatedAsset,
-        id: updatedAsset._id.toString(),
-      };
+      return updatedAsset ? { ...updatedAsset, id: updatedAsset._id.toString() } : null;
     },
     deleteAsset: async (_, { id }) => {
       const result = await Asset.findByIdAndDelete(id);
