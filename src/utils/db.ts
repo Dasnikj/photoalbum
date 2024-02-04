@@ -1,15 +1,19 @@
 // src/utils/db.ts
 import mongoose from 'mongoose';
+import dotenv from 'dotenv';
 
-const connectDB = async (): Promise<void> => {
+dotenv.config();
+
+const MONGODB_URI = process.env.MONGODB_URI || 'mongodb://localhost:27017/photoalbum';
+
+const connectDB = async () => {
   try {
-    const dbUri: string = process.env.MONGODB_URI || 'mongodb://localhost:27017/photoalbum';
-    await mongoose.connect(dbUri, { useNewUrlParser: true, useUnifiedTopology: true });
-    console.log('MongoDB connected');
-  } catch (error) {
-    console.error('MongoDB connection error:', error);
+    await mongoose.connect(MONGODB_URI);
+    console.log('MongoDB Connected');
+  } catch (err: any) { // Explicitly type 'err' as an error object
+    console.error('MongoDB Connection Error:', err.message);
     process.exit(1);
   }
-};
+}; // Add a semicolon here
 
 export default connectDB;

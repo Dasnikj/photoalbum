@@ -3,8 +3,7 @@ import express from 'express';
 import { ApolloServer } from 'apollo-server-express';
 import { readFileSync } from 'fs';
 import { join } from 'path';
-import mongoose from 'mongoose';
-import resolvers from './resolvers'; // Adjust the path as per your resolvers setup
+import { resolvers } from './resolvers'; // Make sure this path matches your project structure
 import connectDB from './utils/db'; // MongoDB connection utility
 
 dotenv.config();
@@ -12,6 +11,9 @@ dotenv.config();
 async function startApolloServer() {
   // Initialize Express
   const app = express();
+
+  // Connect to MongoDB
+  await connectDB();
 
   // Read GraphQL schema file
   const typeDefs = readFileSync(join(__dirname, 'schemas', 'schema.graphql'), 'utf-8');
@@ -24,12 +26,9 @@ async function startApolloServer() {
   });
 
   await server.start();
-  
-  // Connect to MongoDB
-  await connectDB();
 
   // Apply Apollo Middleware to Express
-  server.applyMiddleware({ app });
+  server.applyMiddleware({ app: app as express.Application });
 
   // Start the server
   const PORT = process.env.PORT || 4000;
