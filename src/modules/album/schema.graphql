@@ -1,0 +1,35 @@
+"""
+Album
+"""
+type Album {
+  id: ID!
+  name: String!
+  description: String
+  tags: [String]
+  createdAt: String
+  modifiedAt: String
+  modifiedBy: String
+}
+
+input AlbumInput {
+  name: String!
+  description: String
+  tags: [String]
+}
+
+input AlbumUpdateInput {
+  name: String
+  description: String
+  tags: [String]
+}
+
+type Query {
+    albums: [Album]
+    album(id: ID!): Album
+}
+
+type Mutation {
+    addAlbum(input: AlbumInput): Album
+    updateAlbum(id: ID!, input: AlbumUpdateInput): Album
+    deleteAlbum(id: ID!): Boolean
+}

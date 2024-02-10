@@ -2,9 +2,10 @@ import dotenv from 'dotenv';
 import express from 'express';
 import { ApolloServer } from 'apollo-server-express';
 import { readFileSync } from 'fs';
-import { join } from 'path';
-import { resolvers } from './resolvers'; // Make sure this path matches your project structure
+import path, { join } from 'path';
 import connectDB from './utils/db'; // MongoDB connection utility
+import { mergeTypeDefs, mergeResolvers } from '@graphql-tools/merge'; // Import mergeTypeDefs
+import { loadFilesSync } from '@graphql-tools/load-files'; // Import loadFilesSync
 
 dotenv.config();
 
@@ -15,8 +16,9 @@ async function startApolloServer() {
   // Connect to MongoDB
   await connectDB();
 
-  // Read GraphQL schema file
-  const typeDefs = readFileSync(join(__dirname, 'schemas', 'schema.graphql'), 'utf-8');
+  // Load and merge GraphQL type definitions and resolvers from the modules
+  const typeDefs = mergeTypeDefs(loadFilesSync(path.join(__dirname, 'modules/**/schema.graphql')));
+  const resolvers = mergeResolvers(loadFilesSync(path.join(__dirname, 'modules/**/resolvers.ts')));
 
   // Create Apollo Server
   const server = new ApolloServer({

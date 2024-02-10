@@ -1,3 +1,4 @@
+/* eslint-disable */
 import { GraphQLResolveInfo } from 'graphql';
 export type Maybe<T> = T | null;
 export type InputMaybe<T> = Maybe<T>;
@@ -19,28 +20,30 @@ export type Scalars = {
 /** Album */
 export type Album = {
   __typename?: 'Album';
-  assets?: Maybe<Array<Maybe<Asset>>>;
+  assets: Array<Asset>;
   createdAt?: Maybe<Scalars['String']['output']>;
   description?: Maybe<Scalars['String']['output']>;
   id: Scalars['ID']['output'];
   modifiedAt?: Maybe<Scalars['String']['output']>;
   modifiedBy?: Maybe<Scalars['String']['output']>;
+  name: Scalars['String']['output'];
   tags?: Maybe<Array<Maybe<Scalars['String']['output']>>>;
-  title: Scalars['String']['output'];
 };
 
 export type AlbumInput = {
-  assets?: InputMaybe<Array<InputMaybe<Scalars['ID']['input']>>>;
-  description?: InputMaybe<Scalars['String']['input']>;
-  tags?: InputMaybe<Array<InputMaybe<Scalars['String']['input']>>>;
-  title: Scalars['String']['input'];
+  __typename?: 'AlbumInput';
+  assets?: Maybe<Array<Maybe<Scalars['ID']['output']>>>;
+  description?: Maybe<Scalars['String']['output']>;
+  name: Scalars['String']['output'];
+  tags?: Maybe<Array<Maybe<Scalars['String']['output']>>>;
 };
 
 export type AlbumUpdateInput = {
-  assets?: InputMaybe<Array<InputMaybe<Scalars['ID']['input']>>>;
-  description?: InputMaybe<Scalars['String']['input']>;
-  tags?: InputMaybe<Array<InputMaybe<Scalars['String']['input']>>>;
-  title?: InputMaybe<Scalars['String']['input']>;
+  __typename?: 'AlbumUpdateInput';
+  assets?: Maybe<Array<Maybe<Scalars['ID']['output']>>>;
+  description?: Maybe<Scalars['String']['output']>;
+  name?: Maybe<Scalars['String']['output']>;
+  tags?: Maybe<Array<Maybe<Scalars['String']['output']>>>;
 };
 
 export type Asset = {
@@ -49,10 +52,10 @@ export type Asset = {
   filename: Scalars['String']['output'];
   id: Scalars['ID']['output'];
   metadata?: Maybe<Array<Maybe<Metadata>>>;
-  modifiedAt?: Maybe<Scalars['String']['output']>;
   size?: Maybe<Scalars['Int']['output']>;
   tags?: Maybe<Array<Maybe<Scalars['String']['output']>>>;
   type: MediaType;
+  updatedAt?: Maybe<Scalars['String']['output']>;
   url: Scalars['String']['output'];
 };
 
@@ -75,12 +78,11 @@ export type AssetUpdateInput = {
 };
 
 /** assets */
-export enum MediaType {
-  Audio = 'AUDIO',
-  Document = 'DOCUMENT',
-  Image = 'IMAGE',
-  Video = 'VIDEO'
-}
+export type MediaType =
+  | 'AUDIO'
+  | 'DOCUMENT'
+  | 'IMAGE'
+  | 'VIDEO';
 
 export type Metadata = {
   __typename?: 'Metadata';
@@ -140,7 +142,7 @@ export type Query = {
   album?: Maybe<Album>;
   albums?: Maybe<Array<Maybe<Album>>>;
   asset?: Maybe<Asset>;
-  assets?: Maybe<Array<Maybe<Asset>>>;
+  assets: Array<Asset>;
 };
 
 
@@ -225,8 +227,8 @@ export type DirectiveResolverFn<TResult = {}, TParent = {}, TContext = {}, TArgs
 /** Mapping between all available schema types and the resolvers types */
 export type ResolversTypes = {
   Album: ResolverTypeWrapper<Album>;
-  AlbumInput: AlbumInput;
-  AlbumUpdateInput: AlbumUpdateInput;
+  AlbumInput: ResolverTypeWrapper<AlbumInput>;
+  AlbumUpdateInput: ResolverTypeWrapper<AlbumUpdateInput>;
   Asset: ResolverTypeWrapper<Asset>;
   AssetInput: AssetInput;
   AssetUpdateInput: AssetUpdateInput;
@@ -260,14 +262,30 @@ export type ResolversParentTypes = {
 };
 
 export type AlbumResolvers<ContextType = any, ParentType extends ResolversParentTypes['Album'] = ResolversParentTypes['Album']> = {
-  assets?: Resolver<Maybe<Array<Maybe<ResolversTypes['Asset']>>>, ParentType, ContextType>;
+  assets?: Resolver<Array<ResolversTypes['Asset']>, ParentType, ContextType>;
   createdAt?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
   description?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
   id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
   modifiedAt?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
   modifiedBy?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+  name?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   tags?: Resolver<Maybe<Array<Maybe<ResolversTypes['String']>>>, ParentType, ContextType>;
-  title?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
+};
+
+export type AlbumInputResolvers<ContextType = any, ParentType extends ResolversParentTypes['AlbumInput'] = ResolversParentTypes['AlbumInput']> = {
+  assets?: Resolver<Maybe<Array<Maybe<ResolversTypes['ID']>>>, ParentType, ContextType>;
+  description?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+  name?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  tags?: Resolver<Maybe<Array<Maybe<ResolversTypes['String']>>>, ParentType, ContextType>;
+  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
+};
+
+export type AlbumUpdateInputResolvers<ContextType = any, ParentType extends ResolversParentTypes['AlbumUpdateInput'] = ResolversParentTypes['AlbumUpdateInput']> = {
+  assets?: Resolver<Maybe<Array<Maybe<ResolversTypes['ID']>>>, ParentType, ContextType>;
+  description?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+  name?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+  tags?: Resolver<Maybe<Array<Maybe<ResolversTypes['String']>>>, ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
@@ -276,10 +294,10 @@ export type AssetResolvers<ContextType = any, ParentType extends ResolversParent
   filename?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
   metadata?: Resolver<Maybe<Array<Maybe<ResolversTypes['Metadata']>>>, ParentType, ContextType>;
-  modifiedAt?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
   size?: Resolver<Maybe<ResolversTypes['Int']>, ParentType, ContextType>;
   tags?: Resolver<Maybe<Array<Maybe<ResolversTypes['String']>>>, ParentType, ContextType>;
   type?: Resolver<ResolversTypes['MediaType'], ParentType, ContextType>;
+  updatedAt?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
   url?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
@@ -303,11 +321,13 @@ export type QueryResolvers<ContextType = any, ParentType extends ResolversParent
   album?: Resolver<Maybe<ResolversTypes['Album']>, ParentType, ContextType, RequireFields<QueryAlbumArgs, 'id'>>;
   albums?: Resolver<Maybe<Array<Maybe<ResolversTypes['Album']>>>, ParentType, ContextType>;
   asset?: Resolver<Maybe<ResolversTypes['Asset']>, ParentType, ContextType, RequireFields<QueryAssetArgs, 'id'>>;
-  assets?: Resolver<Maybe<Array<Maybe<ResolversTypes['Asset']>>>, ParentType, ContextType>;
+  assets?: Resolver<Array<ResolversTypes['Asset']>, ParentType, ContextType>;
 };
 
 export type Resolvers<ContextType = any> = {
   Album?: AlbumResolvers<ContextType>;
+  AlbumInput?: AlbumInputResolvers<ContextType>;
+  AlbumUpdateInput?: AlbumUpdateInputResolvers<ContextType>;
   Asset?: AssetResolvers<ContextType>;
   Metadata?: MetadataResolvers<ContextType>;
   Mutation?: MutationResolvers<ContextType>;

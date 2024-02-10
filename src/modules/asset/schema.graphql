@@ -21,8 +21,18 @@ type Asset {
   filename: String!
   size: Int
   createdAt: String
-  modifiedAt: String
+  updatedAt: String
   tags: [String]
+}
+
+extend type Album {
+  assets: [Asset!]!
+}
+extend type AlbumInput {
+  assets: [ID] # References to existing Asset IDs
+}
+extend type AlbumUpdateInput {
+  assets: [ID] # References for updating existing Asset associations
 }
 
 input MetadataInput {
@@ -48,49 +58,12 @@ input AssetUpdateInput {
   tags: [String]
 }
 
-"""
-Album
-"""
-type Album {
-  id: ID!
-  title: String!
-  description: String
-  assets: [Asset] # Assuming 'Asset' type is defined elsewhere in your schema
-  tags: [String]
-  createdAt: String
-  modifiedAt: String
-  modifiedBy: String
-}
-
-input AlbumInput {
-  title: String!
-  description: String
-  assets: [ID] # References to existing Asset IDs
-  tags: [String]
-}
-
-input AlbumUpdateInput {
-  title: String
-  description: String
-  assets: [ID] # References for updating existing Asset associations
-  tags: [String]
-}
-
-
-
 type Query {
-  albums: [Album]
-  album(id: ID!): Album
-  assets: [Asset]
+  assets: [Asset!]!
   asset(id: ID!): Asset
 }
 
-
 type Mutation {
-  addAlbum(input: AlbumInput): Album
-  updateAlbum(id: ID!, input: AlbumUpdateInput): Album
-  deleteAlbum(id: ID!): Boolean
-
   addAsset(input: AssetInput): Asset
   updateAsset(id: ID!, input: AssetUpdateInput): Asset
   deleteAsset(id: ID!): Boolean
